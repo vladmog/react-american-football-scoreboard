@@ -9,6 +9,10 @@ function App() {
   const [awayScore, setAwayScore] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [down, setDown] = useState(3);
+  const [toGo, setToGo] = useState(7);
+  const [ballOn, setBallOn] = useState(21);
+  const [quarter, setQuarter] = useState(4);
 
 
 
@@ -20,7 +24,7 @@ function App() {
   function secToMinSec(seconds){
     let mins = null;
     let secs = null;
-    
+
     mins = (Math.floor(seconds / 60)).toString();
     secs = (seconds % 60).toString();
 
@@ -61,7 +65,7 @@ function App() {
             <div className="away__score">{awayScore}</div>
           </div>
         </div>
-        <BottomRow />
+        <BottomRow down = {down} toGo = {toGo} ballOn = {ballOn} quarter = {quarter} />
       </section>
       <section className="buttons">
         <div className="homeButtons">
@@ -72,15 +76,36 @@ function App() {
           <button 
             onClick = {() => setHomeScore(homeScore + 3)}
             className="homeButtons__fieldGoal">Home Field Goal</button>
+        </div>
+
+        <div>
           <button
-            onClick = {() => setIsActive(!isActive)}>
-              Start/stop timer
+              onClick = {() => setIsActive(!isActive)}>
+                Start/stop timer
           </button>
           <button 
             onClick = {reset}>
             Reset timer
           </button>
+          <button
+              onClick = {() => setDown(down + 1)}>
+                Increment down
+          </button>
+          <button
+              onClick = {() => setToGo(toGo + 1)}>
+                Increment toGo
+          </button>
+          <button
+              onClick = {() => setBallOn(ballOn + 1)}>
+                Increment ballOn
+          </button>
+          <button
+              onClick = {() => setQuarter(quarter + 1)}>
+                Increment quarter
+          </button>
+
         </div>
+
         <div className="awayButtons">
           <button 
             onClick = {() => setAwayScore(awayScore + 7)}
