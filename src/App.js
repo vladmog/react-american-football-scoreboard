@@ -1,5 +1,5 @@
 //TODO: STEP 1 - Import the useState hook.
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
 
@@ -7,6 +7,42 @@ function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+
+
+
+  function reset() {
+    setSeconds(0);
+    setIsActive(false);
+  }
+
+  function secToMinSec(seconds){
+    let mins = null;
+    let secs = null;
+    
+    mins = (Math.floor(seconds / 60)).toString();
+    secs = (seconds % 60).toString();
+
+    return `${mins.padStart(2, '0')}:${secs.padStart(2, '0')}`
+}
+
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setSeconds(seconds => seconds + 1);
+      }, 1000);
+    } else if (!isActive && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, seconds]);
+
+  
+
+
 
   return (
     <div className="container">
@@ -19,7 +55,7 @@ function App() {
 
             <div className="home__score">{homeScore}</div>
           </div>
-          <div className="timer">00:03</div>
+          <div className="timer">{secToMinSec(seconds)}</div>
           <div className="away">
             <h2 className="away__name">Tigers</h2>
             <div className="away__score">{awayScore}</div>
@@ -36,6 +72,14 @@ function App() {
           <button 
             onClick = {() => setHomeScore(homeScore + 3)}
             className="homeButtons__fieldGoal">Home Field Goal</button>
+          <button
+            onClick = {() => setIsActive(!isActive)}>
+              Start/stop timer
+          </button>
+          <button 
+            onClick = {reset}>
+            Reset timer
+          </button>
         </div>
         <div className="awayButtons">
           <button 
